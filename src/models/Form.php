@@ -148,4 +148,172 @@ class Form
     {
         return $this->raw;
     }
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return \WATR\Models\Reference
+     */
+    public function getTheme()
+    {
+        return $this->theme;
+    }
+
+    /**
+     * @param \WATR\Models\Reference $theme
+     */
+    public function setTheme($theme)
+    {
+        $this->theme = $theme;
+    }
+
+    /**
+     * @return \WATR\Models\Reference
+     */
+    public function getWorkspace()
+    {
+        return $this->workspace;
+    }
+
+    /**
+     * @param \WATR\Models\Reference $workspace
+     */
+    public function setWorkspace($workspace)
+    {
+        $this->workspace = $workspace;
+    }
+
+    /**
+     * @return \WATR\Models\Setting
+     */
+    public function getSettings()
+    {
+        return $this->settings;
+    }
+
+    /**
+     * @param \WATR\Models\Setting $settings
+     */
+    public function setSettings($settings)
+    {
+        $this->settings = $settings;
+    }
+
+    /**
+     * @return multitype:\WATR\Models\Screen 
+     */
+    public function getWelcome_screens()
+    {
+        return $this->welcome_screens;
+    }
+
+    /**
+     * @param multitype:\WATR\Models\Screen  $welcome_screens
+     */
+    public function setWelcome_screens($welcome_screens)
+    {
+        $this->welcome_screens = $welcome_screens;
+    }
+
+    /**
+     * @return multitype:\WATR\Models\Screen 
+     */
+    public function getThankyou_screens()
+    {
+        return $this->thankyou_screens;
+    }
+
+    /**
+     * @param multitype:\WATR\Models\Screen  $thankyou_screens
+     */
+    public function setThankyou_screens($thankyou_screens)
+    {
+        $this->thankyou_screens = $thankyou_screens;
+    }
+
+    /**
+     * @return multitype:\WATR\Models\Field 
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * @param multitype:\WATR\Models\Field  $fields
+     */
+    public function setFields($fields)
+    {
+        $this->fields = $fields;
+    }
+
+    /**
+     * @return multitype:
+     */
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    /**
+     * @param multitype: $link
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
+    }
+
+    /**
+     * @return multitype:
+     */
+    public function getHidden()
+    {
+        return $this->hidden;
+    }
+
+    /**
+     * @param multitype: $hidden
+     */
+    public function setHidden($hidden)
+    {
+        $this->hidden = $hidden;
+    }
+
+    /**
+     * @param \WATR\Models\raw $raw
+     */
+    public function setRaw($raw)
+    {
+        $this->raw = $raw;
+    }
+
 }
