@@ -49,12 +49,36 @@ class FieldProperty
      * @var Field[]
      */
     public $fields = [];
+    
+    /**
+     * @var string
+     */
+    public $description = null;
 
+    public function toArray()
+    {
+        $output = [];
+        //$output['randomize'] = $this->randomize;
+        //$output['allow_multiple_selection'] = $this->allow_multiple_selection;
+        //$output['allow_other_choice'] = $this->allow_other_choice;
+        //$output['vertical_alignment'] = $this->vertical_alignment;
+        //$output['steps'] = $this->steps;
+        //$output['start_at_one'] = $this->start_at_one;
+        //$output['choices'] = $this->choices;
+        //$output['fields'] = $this->fields;
+        $output['description'] = $this->description;
+        
+        return $output;
+    }
     /**
      * constructor
      */
-    public function __construct($object, bool $group)
+    public function __construct($object = null, bool $group = false)
     {
+        if ($object == null) {
+            return;
+        }
+        
         if(isset($object->randomize))
         {
             $this->randomize = $object->randomize;

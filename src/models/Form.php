@@ -23,42 +23,42 @@ class Form
     public $title;
 
     /**
-     * var Reference identifier for location
+     * @var Reference identifier for location
      */
     public $theme;
 
     /**
-     * var Reference identifier for location
+     * @var Reference identifier for location
      */
     public $workspace;
 
     /**
-     * var Setting Typeform form settings
+     * @var Setting Typeform form settings
      */
     public $settings;
 
     /**
-     * var Screen[] settings
+     * @var Screen[] settings
      */
     public $welcome_screens = [];
 
     /**
-     * var Screen[] settings
+     * @var Screen[] settings
      */
     public $thankyou_screens = [];
 
     /**
-     * var Field[] settings
+     * @var Field[] settings
      */
     public $fields = [];
 
     /*
-     * var Link settings
+     * @var Link settings
      */
     public $link = [];
 
     /*
-     * var '' settings
+     * @var '' settings
      */
     public $hidden = [];
 
@@ -70,8 +70,12 @@ class Form
     /**
      * Form constructor
      */
-    public function __construct($json)
+    public function __construct($json = null)
     {
+        if ($json == null) {
+            return;
+        }
+        
         $this->raw = $json;
         $this->id = $json->id;
         $this->title = $json->title;
@@ -126,6 +130,20 @@ class Form
         }
     }
 
+    public function toArray()
+    {
+        $output = [];
+        
+        $output['title'] = $this->title;
+        $output['settings'] = $this->settings->toArray();
+        $output['fields'] = array_map(function($field) {
+                                return $field->toArray();
+                            } , $this->fields);
+        
+        
+        return $output;
+        
+    }
     public function getRaw()
     {
         return $this->raw;

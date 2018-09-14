@@ -26,7 +26,7 @@ class Field
     public $ref;
 
     /**
-     * @var Property string
+     * @var FieldProperty 
      */
     public $properties;
 
@@ -43,8 +43,12 @@ class Field
     /**
      * constructor
      */
-    public function __construct($object)
+    public function __construct($object = null)
     {
+        if ($object == null) {
+            return;
+        }
+        
         $this->id = $object->id;
         $this->title = $object->title;
         $this->ref = $object->ref;
@@ -59,5 +63,18 @@ class Field
         {
             $this->validations = new Validation($object->validations);
         }
+    }
+    
+    public function toArray()
+    {
+        $output = [];
+        $output['id'] = $this->id;
+        $output['title'] = $this->title;
+        $output['ref'] = $this->ref;
+        $output['properties'] =  $this->properties->toArray();
+            
+        $output['type'] = $this->type;
+        
+        return $output;
     }
 }

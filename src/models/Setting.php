@@ -45,8 +45,12 @@ class Setting
     /**
      * Constructor
      */
-    public function __construct($object)
+    public function __construct($object = null)
     {
+        if ($object == null) {
+            return;
+        }
+        
         $this->is_public = $object->is_public;
         $this->is_trial = $object->is_trial;
         $this->language = $object->language;
@@ -54,5 +58,15 @@ class Setting
         $this->show_progress_bar = $object->show_progress_bar;
         $this->show_typeform_branding = $object->show_typeform_branding;
         $this->meta = new Meta($object->meta);
+    }
+    
+    public function toArray()
+    {
+        $output = [];
+        $output['language'] = $this->language;
+        $output['is_public'] = $this->is_public;
+        $output['progress_bar'] = $this->progress_bar;
+        return $output;
+        
     }
 }

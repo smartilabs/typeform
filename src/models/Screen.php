@@ -30,8 +30,12 @@ class Screen
     /**
      * constructor
      */
-    public function __construct($object)
+    public function __construct($object = null)
     {
+        if ($object == null) {
+            return;
+        }
+        
         $this->ref = $object->ref;
         $this->title = $object->title;
         $this->properties = new Property($object->properties);

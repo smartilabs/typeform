@@ -5,6 +5,8 @@ use GuzzleHttp\Client;
 use WATR\Models\Form;
 use WATR\Models\FormResponse;
 use WATR\Models\WebhookResponse;
+use Symfony\Component\VarDumper\VarDumper;
+use GuzzleHttp\Exception\ClientException;
 
 /**
  * Base Package wrapper for Typeform API
@@ -12,7 +14,7 @@ use WATR\Models\WebhookResponse;
 class Typeform
 {
     /**
-     * @var  GuzzleHttp\Client
+     * @var GuzzleHttp\Client $http
      */
     protected $http;
 
@@ -29,6 +31,7 @@ class Typeform
     public function __construct($apiKey)
     {
         $this->apiKey = $apiKey;
+        
         $this->http = new Client([
             'base_uri' => $this->baseUri,
             'headers' => [
@@ -62,14 +65,28 @@ class Typeform
         }
         return $responses;
     }
-
+    
+    
+    /**
+     * Get form information
+     */
+    public function postForm(Form $form)
+    {
+        $formData = $form->toArray();
+        $response = $this->http->request('POST', "/forms" , [ 'json' => $formData]);
+        
+        $body = json_decode($response->getBody());
+        
+        return $this->getForm($body->id);
+    }
+    
     /**
      * Register webhook for form
      */
-    public function registerWebhook(Form $form, string $url, string $tag = "response")
+    public function registerWebhook(Form $form, string $url)
     {
         $response = $this->http->put(
-            "/forms/" . $form->id . "/webhooks/" . $tag,
+            "/forms/" . $form->id . "/webhooks/response",
             [
                 'json' => [
                     'url' => $url,
