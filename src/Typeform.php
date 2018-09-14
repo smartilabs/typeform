@@ -5,7 +5,6 @@ use GuzzleHttp\Client;
 use WATR\Models\Form;
 use WATR\Models\FormResponse;
 use WATR\Models\WebhookResponse;
-use Symfony\Component\VarDumper\VarDumper;
 use GuzzleHttp\Exception\ClientException;
 
 /**
@@ -69,11 +68,27 @@ class Typeform
     
     /**
      * Get form information
+     *
+     * @return Form
      */
     public function postForm(Form $form)
     {
         $formData = $form->toArray();
         $response = $this->http->request('POST', "/forms" , [ 'json' => $formData]);
+        
+        $body = json_decode($response->getBody());
+        
+        return $this->getForm($body->id);
+    }
+    /**
+     * Get form information
+     *
+     * @return Form
+     */
+    public function updateForm(Form $form)
+    {
+        $formData = $form->toArray();
+        $response = $this->http->request('PUT', "/forms/".$form->id , [ 'json' => $formData]);
         
         $body = json_decode($response->getBody());
         
@@ -93,7 +108,7 @@ class Typeform
                     'enabled' => true,
                 ]
             ]
-        );
+            );
         return json_decode($response->getBody());
     }
 
