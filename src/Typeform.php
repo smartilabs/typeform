@@ -6,6 +6,8 @@ use WATR\Models\Form;
 use WATR\Models\FormResponse;
 use WATR\Models\WebhookResponse;
 use GuzzleHttp\Exception\ClientException;
+use WATR\Models\Model;
+use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * Base Package wrapper for Typeform API
@@ -65,6 +67,76 @@ class Typeform
         return $responses;
     }
     
+    
+    public function findById(string $modelClassName, $id, $params = [])
+    {
+        $objectBaseClass = new $modelClassName();
+        if (!class_exists($modelClassName, true)) {
+            throw new \Exception('Class does not exist');
+        }
+        
+        $objectBaseClass = new $modelClassName();
+        
+        if (!$objectBaseClass instanceof Model) {
+            throw new \Exception('Class is not a Model instance');
+        }
+        
+        
+        $response = $this->http->get($objectBaseClass->getUrl().'/'.$id);
+        
+        $body = json_decode($response->getBody());
+        
+        /**
+         *
+         * @var Model $parsedObject
+         */
+        $parsedObject = new $objectBaseClass();
+        $parsedObject->fromArray($body);
+        return $parsedObject;
+    }
+    
+    /**
+     * Returns a list of models from the server
+     * 
+     * Valid $params (if applicable):
+     * 'page' => integer
+     * 'page_size' => number
+     * 'search' => string 
+     * 
+     * @param string $modelClassName
+     * @param array $params
+     */
+    public function getList(string $modelClassName, $params = [])
+    {
+        if (!class_exists($modelClassName, true)) {
+            throw new \Exception('Class does not exist');
+        }
+        
+        $objectBaseClass = new $modelClassName();
+        
+        if (!$objectBaseClass instanceof Model) {
+            throw new \Exception('Class is not a Model instance');
+        }
+        
+        $response = $this->http->get($objectBaseClass->getUrl());
+        $body = json_decode($response->getBody());
+        
+        $parsedObjects = [];
+        
+        if (isset($body->items)) {
+            foreach ($body->items as $item) {
+                /**
+                 * 
+                 * @var Model $parsedObject
+                 */
+                $parsedObject = new $objectBaseClass();
+                $parsedObject->fromArray($item);
+                $parsedObjects[] = $parsedObject;
+            }
+        }
+        $body->items = $parsedObjects;
+        return $body;
+    }
     
     /**
      * Get form information

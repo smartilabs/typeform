@@ -10,8 +10,15 @@ use WATR\Models\Screen;
 /**
  * Form Model
  */
-class Form
+class Form  extends \WATR\Models\Model
 {
+    
+    /**
+     *
+     * @var string
+     */
+    public $baseUri = 'forms';
+    
     /**
      * @var string Typeform unique identifier
      */
@@ -66,7 +73,37 @@ class Form
      * @var raw form
      */
     private $raw;
-
+    
+    /**
+     * Generates an array of items which will need to be used to send back to typeform
+     *
+     * @return array
+     */
+    public function getProperties() {
+        
+        $out = [];
+        $out[] = 'id';
+        $out[] = 'title';
+        $out[] = ['id' => 'theme', 'type' => 'reference'];
+        $out[] = ['id' => 'workspace', 'type' => 'reference'];
+        $out[] = ['id' => 'welcome_screens', 'type' => 'array', 'class' => Screen::class];
+        $out[] = ['id' => 'thankyou_screens', 'type' => 'array', 'class' => Screen::class];
+        $out[] = ['id' => 'fields', 'type' => 'array', 'class' => Field::class];
+        $out[] = 'link';
+        $out[] = ['id' => 'hidden', 'type' => 'array'];
+        
+        return $out;
+    }
+    
+    /**
+     * Generates a URL to obtain information from
+     *
+     * @return string
+     */
+    public function getUrl() {
+        return $this->baseUri;
+    }
+    
     /**
      * Form constructor
      */
