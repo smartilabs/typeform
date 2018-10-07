@@ -4,8 +4,6 @@ namespace WATR\Models;
 
 use WATR\Models\Choice;
 use WATR\Models\Field;
-use Symfony\Component\VarDumper\VarDumper;
-
 /**
  * FieldProperty Model
  */
@@ -60,6 +58,19 @@ class FieldProperty
      * @var string
      */
     public $description = '';
+    
+    /**
+     * Used for opinion_scale
+     *   [
+     *     "left": "left label",
+     *     "center": "center label",
+     *     "right": "right label"
+     *   ]
+     *   
+     * @var string[]
+     */
+    public $labels = [];
+    
     
     /**
      * @var string[]
@@ -149,12 +160,19 @@ class FieldProperty
                 array_push($this->choices, new Choice($choice));
             }
         }
-
+        
         if(isset($object->fields) && $group)
         {
             foreach($object->fields as $field)
             {
                 array_push($this->fields, new Field($field));
+            }
+        }
+        if(isset($object->labels))
+        {
+            foreach($object->labels as $k => $field)
+            {
+                $this->setLabel($k, $field);
             }
         }
     }
@@ -164,6 +182,9 @@ class FieldProperty
         $activeFields  = [];
         
         switch ($type) {
+            case "opinion_scale":
+                $activeFields =  ['description','steps', 'start_at_one','labels'];
+                break;
             case "multiple_choice":
                 $activeFields =  ['description','randomize', 'allow_multiple_selection','allow_other_choice','vertical_alignment','choices'];
                 break;
@@ -172,6 +193,8 @@ class FieldProperty
                 break;
             case 'short_text':
             case 'long_text':
+            case 'legal':
+            case 'yes_no':
                 $activeFields =  ['description'];
                 break;
         }
@@ -352,7 +375,24 @@ class FieldProperty
     {
         $this->alphabetical_order = $alphabetical_order;
     }
+    /**
+     * @return multitype:string 
+     */
+    public function getLabels()
+    {
+        return $this->labels;
+    }
 
+    /**
+     * @param multitype:string  $labels
+     */
+    public function setLabels($labels)
+    {
+        $this->labels = $labels;
+    }
 
-    
+    public function setLabel($key, $value)
+    {
+        $this->labels[$key] = $value;
+    }
 }

@@ -89,6 +89,7 @@ class Form  extends \WATR\Models\Model
         $out[] = ['id' => 'welcome_screens', 'type' => 'array', 'class' => Screen::class];
         $out[] = ['id' => 'thankyou_screens', 'type' => 'array', 'class' => Screen::class];
         $out[] = ['id' => 'fields', 'type' => 'array', 'class' => Field::class];
+        $out[] = ['id' => 'logic', 'type' => 'array', 'class' => Field::class];
         $out[] = 'link';
         $out[] = ['id' => 'hidden', 'type' => 'array'];
         
@@ -172,6 +173,7 @@ class Form  extends \WATR\Models\Model
         $output = [];
         
         $output['title'] = $this->title;
+        $output['theme'] = $this->theme;
         $output['settings'] = $this->settings->toArray();
         $output['fields'] = array_map(function($field) {
                                 return $field->toArray();
