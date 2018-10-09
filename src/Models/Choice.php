@@ -48,13 +48,14 @@ class Choice
         if ($this->getId() != null) {
             $output['id'] = $this->getId();
         }
-            
+        
         if ($this->getRef() != null) {
-            $output['ref'] = $this->getRef();
+            $output['ref'] = (string) $this->getRef();
         }
             
+        
         if ($this->getLabel() != null) {
-            $output['label'] = $this->getLabel();
+            $output['label'] = (string) $this->getLabel();
         }
             
         return $output;

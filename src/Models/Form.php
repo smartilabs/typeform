@@ -63,11 +63,15 @@ class Form  extends \WATR\Models\Model
      * @var Link settings
      */
     public $link = [];
-
+    
     /*
      * @var '' settings
      */
     public $hidden = [];
+    /*
+     * @var '' settings
+     */
+    public $logic = null;
 
     /**
      * @var raw form
@@ -137,11 +141,14 @@ class Form  extends \WATR\Models\Model
         }
 
         $this->settings = new Link($json->_links);
-
+        
         if (isset($json->fields)) {
             foreach ($json->fields as $field) {
                 array_push($this->fields, new Field($field));
             }
+        }
+        if (isset($json->logic)) {
+            $this->logic = $json->logic;
         }
 
         if(isset($json->hidden))
@@ -151,6 +158,7 @@ class Form  extends \WATR\Models\Model
                 array_push($this->hidden, $hid);
             }
         }
+        
     }
 
     /**
@@ -178,11 +186,29 @@ class Form  extends \WATR\Models\Model
         $output['fields'] = array_map(function($field) {
                                 return $field->toArray();
                             } , $this->fields);
-        
+            
+        $output['logic'] = $this->logic;
         
         return $output;
         
     }
+    
+    public function getQuestionByRef($ref, $searchByTitleAlso = false) {
+        
+        foreach ($this->fields as $field) {
+            if ($ref == $field->getRef()) {
+                return $field;
+            }
+        }
+        foreach ($this->fields as $field) {
+            if ($ref == $field->getTitle()) {
+                return $field;
+            }
+        }
+        
+        return null;
+    }
+    
     public function getRaw()
     {
         return $this->raw;

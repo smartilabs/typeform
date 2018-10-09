@@ -23,11 +23,15 @@ class FieldProperty
      * @var boolean alphabetical_order
      */
     public $alphabetical_order;
-
+    
     /**
      * @var boolean other choice
      */
     public $allow_other_choice;
+    /**
+     * @var boolean other choice
+     */
+    public $hide_marks;
 
     /**
      * @var boolean vertical alignment
@@ -38,12 +42,17 @@ class FieldProperty
      * @var int steps
      */
     public $steps;
-
+    
     /**
      * @var boolean start interval
      */
     public $start_at_one;
-
+    
+    /**
+     * @var string 
+     */
+    public $button_text;
+    
     /**
      * @var Choice[]
      */
@@ -77,6 +86,10 @@ class FieldProperty
      */
     public $activeVariables = [];
 
+    /*
+     * Used to determine the parent type if required (set in setActivePropertyFields)
+     */
+    private $fieldType = null;
     
     public function toArray()
     {
@@ -88,7 +101,7 @@ class FieldProperty
          * if its an array of things then we will go look at those
          */
         foreach ($this->getActiveVariables() as $activeVariable) {
-            if (is_string($this->$activeVariable) ) {
+            if (is_string($this->$activeVariable) || is_bool($this->$activeVariable)) {
                 $output[$activeVariable] = $this->$activeVariable;
             } elseif (method_exists($this->$activeVariable, 'toArray')) {
                 $output[$activeVariable] =  $this->$activeVariable->toArray();
@@ -105,16 +118,17 @@ class FieldProperty
             }
         }
         
-        
-        //$output['randomize'] = $this->randomize;
-        //$output['allow_multiple_selection'] = $this->allow_multiple_selection;
-        //$output['allow_other_choice'] = $this->allow_other_choice;
-        //$output['vertical_alignment'] = $this->vertical_alignment;
-        //$output['steps'] = $this->steps;
-        //$output['start_at_one'] = $this->start_at_one;
-        //$output['choices'] = $this->choices;
-        //$output['fields'] = $this->fields;
-//         $output['description'] = $this->description;
+        /*
+         * Special case where for some reason typeform doesnt do ref on dropdown choice items only on multiple choice items
+         * so if we are a choicelist then let's just remove the ref for someone else to deal with.
+         *  
+         * If you need to use ref then use multiple_choice type with multipleSelection to false
+         */
+        if ($this->fieldType == 'dropdown') {
+            foreach($output['choices'] as &$oneChoice) {
+                unset($oneChoice['ref']);
+            }
+        }
         
         return $output;
     }
@@ -179,9 +193,14 @@ class FieldProperty
     
     public function setActivePropertyFields($type)
     {
+        $this->fieldType = $type;
+        
         $activeFields  = [];
         
         switch ($type) {
+            case "statement":
+                $activeFields =  ['description','button_text', 'hide_marks'];
+                break;
             case "opinion_scale":
                 $activeFields =  ['description','steps', 'start_at_one','labels'];
                 break;
@@ -189,7 +208,7 @@ class FieldProperty
                 $activeFields =  ['description','randomize', 'allow_multiple_selection','allow_other_choice','vertical_alignment','choices'];
                 break;
             case 'dropdown':
-                $activeFields =  ['alphabetical_order', 'choices','description'];
+                $activeFields =  ['alphabetical_order', 'choices', 'description'];
                 break;
             case 'short_text':
             case 'long_text':
