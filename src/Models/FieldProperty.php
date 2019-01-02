@@ -56,7 +56,7 @@ class FieldProperty
     /**
      * @var Choice[]
      */
-    public $choices = [];
+    public $choices = null;
 
     /**
      * @var Field[]
@@ -101,7 +101,7 @@ class FieldProperty
          * if its an array of things then we will go look at those
          */
         foreach ($this->getActiveVariables() as $activeVariable) {
-            if (is_string($this->$activeVariable) || is_bool($this->$activeVariable)) {
+            if (is_string($this->$activeVariable) || is_bool($this->$activeVariable) || is_numeric($this->$activeVariable)) {
                 $output[$activeVariable] = $this->$activeVariable;
             } elseif (method_exists($this->$activeVariable, 'toArray')) {
                 $output[$activeVariable] =  $this->$activeVariable->toArray();
@@ -115,6 +115,9 @@ class FieldProperty
                         $output[$activeVariable][] = $this->$activeVariable;
                     }
                 }
+            } elseif (is_object($this->$activeVariable)) {
+                $output[$activeVariable] = $this->$activeVariable;
+                
             }
         }
         
@@ -129,7 +132,6 @@ class FieldProperty
                 unset($oneChoice['ref']);
             }
         }
-        
         return $output;
     }
     
@@ -169,6 +171,7 @@ class FieldProperty
 
         if(isset($object->choices))
         {
+            $object->choices = [];
             foreach($object->choices as $choice)
             {
                 array_push($this->choices, new Choice($choice));

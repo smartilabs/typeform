@@ -71,7 +71,7 @@ class Form  extends \WATR\Models\Model
     /*
      * @var '' settings
      */
-    public $logic = null;
+    public $logic = [];
 
     /**
      * @var raw form

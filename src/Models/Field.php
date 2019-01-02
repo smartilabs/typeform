@@ -45,6 +45,10 @@ class Field
      */
     public function __construct($object = null)
     {
+        
+        $this->setValidations(new Validation(null));
+        $this->setProperties(new FieldProperty(null));
+        
         if ($object == null) {
             return;
         }
@@ -64,6 +68,9 @@ class Field
         if(isset($object->validations))
         {
             $this->setValidations(new Validation($object->validations));
+        } else {
+            
+            $this->setValidations(new Validation());
         }
     }
     
@@ -74,6 +81,9 @@ class Field
         $output['title'] = $this->title;
         $output['ref'] = $this->ref;
         $output['properties'] =  $this->properties->toArray();
+        if ($this->type !== 'statement') {
+            $output['validations'] =  $this->validations->toArray();
+        }
         $output['type'] = $this->type;
         
         return $output;

@@ -4,7 +4,6 @@ namespace WATR\Models;
 
 use WATR\Typeform;
 use WATR\Models\Model;
-use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * Base Model for objects 

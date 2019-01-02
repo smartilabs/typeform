@@ -7,7 +7,6 @@ use WATR\Models\FormResponse;
 use WATR\Models\WebhookResponse;
 use GuzzleHttp\Exception\ClientException;
 use WATR\Models\Model;
-use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * Base Package wrapper for Typeform API
