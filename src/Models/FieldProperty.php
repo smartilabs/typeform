@@ -217,6 +217,7 @@ class FieldProperty
             case 'long_text':
             case 'legal':
             case 'yes_no':
+            case 'number':
                 $activeFields =  ['description'];
                 break;
         }
