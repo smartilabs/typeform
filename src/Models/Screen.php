@@ -44,4 +44,19 @@ class Screen
             $this->attachment = new Attachment($object->attachment);
         }
     }
+    
+    public function toArray()
+    {
+        $output = [];
+        $output['ref'] = $this->ref;
+        $output['title'] = $this->title;
+        $output['properties'] =  $this->properties->toArray();
+        if(isset($this->attachment))
+        {
+            $output['attachment'] = $this->attachment->toArray();
+        }
+        
+        return $output;
+    }
+    
 }

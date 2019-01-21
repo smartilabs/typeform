@@ -16,11 +16,20 @@ class Property
      * @var boolean show button
      */
     public $show_button;
-
+    
     /**
      * @var string button text
      */
     public $button_text;
+    /**
+     * @var string button mode - enum ("reload", "redirect")
+     */
+    public $button_mode;
+    
+    /**
+     * @var string Url to redirect to (only used if button_mode is redirect)
+     */
+    public $redirect_url;
 
     /**
      * constructor
@@ -42,6 +51,10 @@ class Property
         $output['share_icons'] = $this->share_icons;
         $output['show_button'] = $this->show_button;
         $output['button_text'] = $this->button_text;
+        $output['button_mode'] = $this->button_mode;
+        if ($this->button_mode == "redirect") {
+            $output['redirect_url'] = $this->redirect_url;
+        }
         
         return $output;
     }

@@ -36,7 +36,13 @@ class Setting
      * @var boolean show branding
      */
     public $show_typeform_branding;
-
+    
+    /**
+     * Redirect after form 
+     * @var string 
+     */
+    public $redirect_after_submit_url;
+    
     /**
      * @var Meta
      */
@@ -56,7 +62,12 @@ class Setting
         $this->language = $object->language;
         $this->progress_bar = $object->progress_bar;
         $this->show_progress_bar = $object->show_progress_bar;
-        $this->show_typeform_branding = $object->show_typeform_branding;
+        $this->show_typeform_branding = (boolean) $object->show_typeform_branding;
+        
+        if(isset($object->redirect_after_submit_url)) {
+            $this->redirect_after_submit_url = $object->redirect_after_submit_url;
+        }
+        
         $this->meta = new Meta($object->meta);
     }
     
@@ -66,6 +77,12 @@ class Setting
         $output['language'] = $this->language;
         $output['is_public'] = $this->is_public;
         $output['progress_bar'] = $this->progress_bar;
+        if ($this->show_typeform_branding) {
+            $output['show_typeform_branding'] = (boolean)  $this->show_typeform_branding;
+        }
+        if ($this->redirect_after_submit_url) {
+            $output['redirect_after_submit_url'] = $this->redirect_after_submit_url;
+        }
         return $output;
         
     }

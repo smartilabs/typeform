@@ -189,6 +189,10 @@ class Form  extends \WATR\Models\Model
             
         $output['logic'] = $this->logic;
         
+        $output['thankyou_screens'] = array_map(function($field) {
+            return $field->toArray();
+        } , $this->thankyou_screens);
+        
         return $output;
         
     }
@@ -316,7 +320,7 @@ class Form  extends \WATR\Models\Model
     {
         return $this->thankyou_screens;
     }
-
+    
     /**
      * @param multitype:\WATR\Models\Screen  $thankyou_screens
      */
