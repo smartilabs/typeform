@@ -77,9 +77,8 @@ class Setting
         $output['language'] = $this->language;
         $output['is_public'] = $this->is_public;
         $output['progress_bar'] = $this->progress_bar;
-        if ($this->show_typeform_branding) {
-            $output['show_typeform_branding'] = (boolean)  $this->show_typeform_branding;
-        }
+        $output['show_typeform_branding'] = (boolean)  $this->show_typeform_branding;
+            
         if ($this->redirect_after_submit_url) {
             $output['redirect_after_submit_url'] = $this->redirect_after_submit_url;
         }
