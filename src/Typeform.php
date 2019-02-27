@@ -52,6 +52,8 @@ class Typeform
 
     /**
      * Get form responses
+     * 
+     * @return FormResponse[]
      */
     public function getResponses($formId)
     {

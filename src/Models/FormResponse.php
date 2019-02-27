@@ -58,7 +58,7 @@ class FormResponse
         $this->landed_at = \DateTime::createFromFormat(
             'Y-m-d\TH:i:s\Z',
             $json->landed_at
-        );
+            );
         if (isset($json->definition)) {
             $this->definition = new FormDefinition($json->definition);
         }
