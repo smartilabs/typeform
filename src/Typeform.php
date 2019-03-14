@@ -57,7 +57,7 @@ class Typeform
      */
     public function getResponses($formId)
     {
-        $response = $this->http->get("/forms/" . $formId . "/responses");
+        $response = $this->http->get("/forms/" . $formId . "/responses?page_size=999");
         $body = json_decode($response->getBody());
         $responses = [];
         if (isset($body->items)) {
