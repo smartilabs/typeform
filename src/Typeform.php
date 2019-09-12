@@ -119,7 +119,9 @@ class Typeform
             throw new \Exception('Class is not a Model instance');
         }
         
-        $response = $this->http->get($objectBaseClass->getUrl(), $params);
+        $response = $this->http->get($objectBaseClass->getUrl(), [
+            'query' => $params
+        ]);
         $body = json_decode($response->getBody());
         
         $parsedObjects = [];
