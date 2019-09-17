@@ -72,6 +72,12 @@ class FormResponse
             'Y-m-d\TH:i:s\Z',
             $json->submitted_at
         ) : null;
+
+        // if we get strange old dates, null this value
+        if ($this->submitted_at && $this->submitted_at->diff(new \DateTime())->y > 20) {
+            $this->submitted_at = null;
+        }
+        
         $this->landed_at = $json->landed_at ? \DateTime::createFromFormat(
             'Y-m-d\TH:i:s\Z',
             $json->landed_at
