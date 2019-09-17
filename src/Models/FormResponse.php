@@ -43,12 +43,17 @@ class FormResponse
     public $definition;
 
     /**
-     * @var Answer[] settings
+     * @var Answer[] $answers
      */
     public $answers = [];
 
-    /*
-     * @var '' settings
+    /**
+     * @var array $metadata
+     */
+    public $metadata = [];
+
+    /**
+     * @var array $hidden
      */
     public $hidden = [];
 
@@ -86,6 +91,14 @@ class FormResponse
             foreach($json->hidden as $key => $val)
             {
                 $this->hidden[$key] = $val;
+            }
+        }
+
+        if(isset($json->metadata))
+        {
+            foreach($json->metadata as $key => $val)
+            {
+                $this->metadata[$key] = $val;
             }
         }
     }
@@ -169,7 +182,7 @@ class FormResponse
     }
 
     /**
-     * @return date
+     * @return \DateTime
      */
     public function getSubmittedAt(): \DateTime
     {
@@ -177,17 +190,17 @@ class FormResponse
     }
 
     /**
-     * @param date $submitted_at
+     * @param \DateTime $submitted_at
      * @return FormResponse
      */
-    public function setSubmittedAt(da\DateTimete $submitted_at): FormResponse
+    public function setSubmittedAt(\DateTime $submitted_at): FormResponse
     {
         $this->submitted_at = $submitted_at;
         return $this;
     }
 
     /**
-     * @return date
+     * @return \DateTime
      */
     public function getLandedAt(): \DateTime
     {
@@ -195,7 +208,7 @@ class FormResponse
     }
 
     /**
-     * @param date $landed_at
+     * @param \DateTime $landed_at
      * @return FormResponse
      */
     public function setLandedAt(\DateTime $landed_at): FormResponse
@@ -255,6 +268,42 @@ class FormResponse
     public function setAnswers(array $answers): FormResponse
     {
         $this->answers = $answers;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMetadata(): array
+    {
+        return $this->metadata;
+    }
+
+    /**
+     * @param array $metadata
+     * @return FormResponse
+     */
+    public function setMetadata(array $metadata): FormResponse
+    {
+        $this->metadata = $metadata;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHidden(): array
+    {
+        return $this->hidden;
+    }
+
+    /**
+     * @param array $hidden
+     * @return FormResponse
+     */
+    public function setHidden(array $hidden): FormResponse
+    {
+        $this->hidden = $hidden;
         return $this;
     }
 }
