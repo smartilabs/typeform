@@ -68,14 +68,14 @@ class FormResponse
         $this->token = $json->token;
         $this->response_id = $json->response_id;
         $this->landing_id = $json->landing_id;
-        $this->submitted_at = \DateTime::createFromFormat(
+        $this->submitted_at = $json->submitted_at ? \DateTime::createFromFormat(
             'Y-m-d\TH:i:s\Z',
             $json->submitted_at
-        );
-        $this->landed_at = \DateTime::createFromFormat(
+        ) : null;
+        $this->landed_at = $json->landed_at ? \DateTime::createFromFormat(
             'Y-m-d\TH:i:s\Z',
             $json->landed_at
-            );
+            ) : null;
         if (isset($json->definition)) {
             $this->definition = new FormDefinition($json->definition);
         }
@@ -184,34 +184,34 @@ class FormResponse
     /**
      * @return \DateTime
      */
-    public function getSubmittedAt(): \DateTime
+    public function getSubmittedAt(): ?\DateTime
     {
         return $this->submitted_at;
     }
 
     /**
-     * @param \DateTime $submitted_at
+     * @param \DateTime|null $submitted_at
      * @return FormResponse
      */
-    public function setSubmittedAt(\DateTime $submitted_at): FormResponse
+    public function setSubmittedAt(\DateTime $submitted_at = null): FormResponse
     {
         $this->submitted_at = $submitted_at;
         return $this;
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime|null
      */
-    public function getLandedAt(): \DateTime
+    public function getLandedAt(): ?\DateTime
     {
         return $this->landed_at;
     }
 
     /**
-     * @param \DateTime $landed_at
+     * @param \DateTime|null $landed_at
      * @return FormResponse
      */
-    public function setLandedAt(\DateTime $landed_at): FormResponse
+    public function setLandedAt(\DateTime $landed_at = null): FormResponse
     {
         $this->landed_at = $landed_at;
         return $this;
