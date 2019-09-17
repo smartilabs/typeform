@@ -23,12 +23,12 @@ class FormResponse
     public $token;
 
     /**
-     * @var date submission date
+     * @var \DateTime submission date
      */
     public $submitted_at;
 
     /**
-     * @var date landed date
+     * @var \DateTime landed date
      */
     public $landed_at;
 
@@ -171,7 +171,7 @@ class FormResponse
     /**
      * @return date
      */
-    public function getSubmittedAt(): date
+    public function getSubmittedAt(): \DateTime
     {
         return $this->submitted_at;
     }
@@ -180,7 +180,7 @@ class FormResponse
      * @param date $submitted_at
      * @return FormResponse
      */
-    public function setSubmittedAt(date $submitted_at): FormResponse
+    public function setSubmittedAt(da\DateTimete $submitted_at): FormResponse
     {
         $this->submitted_at = $submitted_at;
         return $this;
@@ -189,7 +189,7 @@ class FormResponse
     /**
      * @return date
      */
-    public function getLandedAt(): date
+    public function getLandedAt(): \DateTime
     {
         return $this->landed_at;
     }
@@ -198,7 +198,7 @@ class FormResponse
      * @param date $landed_at
      * @return FormResponse
      */
-    public function setLandedAt(date $landed_at): FormResponse
+    public function setLandedAt(\DateTime $landed_at): FormResponse
     {
         $this->landed_at = $landed_at;
         return $this;
