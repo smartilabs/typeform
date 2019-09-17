@@ -8,6 +8,11 @@ namespace WATR\Models;
 class FormResponse
 {
     /**
+     * @var string Response id
+     */
+    public $response_id;
+
+    /**
      * @var string Form identifier
      */
     public $form_id;
@@ -26,6 +31,11 @@ class FormResponse
      * @var date landed date
      */
     public $landed_at;
+
+    /**
+     * @var string landing_id
+     */
+    public $landing_id;
 
     /**
      * @var Form definition of form
@@ -51,6 +61,8 @@ class FormResponse
             $this->form_id = $json->form_id;
         }
         $this->token = $json->token;
+        $this->response_id = $json->response_id;
+        $this->landing_id = $json->landing_id;
         $this->submitted_at = \DateTime::createFromFormat(
             'Y-m-d\TH:i:s\Z',
             $json->submitted_at
@@ -100,5 +112,149 @@ class FormResponse
             'field' => $field,
             'answer' => $result
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getResponseId(): string
+    {
+        return $this->response_id;
+    }
+
+    /**
+     * @param string $response_id
+     * @return FormResponse
+     */
+    public function setResponseId(string $response_id): FormResponse
+    {
+        $this->response_id = $response_id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormId(): string
+    {
+        return $this->form_id;
+    }
+
+    /**
+     * @param string $form_id
+     * @return FormResponse
+     */
+    public function setFormId(string $form_id): FormResponse
+    {
+        $this->form_id = $form_id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param string $token
+     * @return FormResponse
+     */
+    public function setToken(string $token): FormResponse
+    {
+        $this->token = $token;
+        return $this;
+    }
+
+    /**
+     * @return date
+     */
+    public function getSubmittedAt(): date
+    {
+        return $this->submitted_at;
+    }
+
+    /**
+     * @param date $submitted_at
+     * @return FormResponse
+     */
+    public function setSubmittedAt(date $submitted_at): FormResponse
+    {
+        $this->submitted_at = $submitted_at;
+        return $this;
+    }
+
+    /**
+     * @return date
+     */
+    public function getLandedAt(): date
+    {
+        return $this->landed_at;
+    }
+
+    /**
+     * @param date $landed_at
+     * @return FormResponse
+     */
+    public function setLandedAt(date $landed_at): FormResponse
+    {
+        $this->landed_at = $landed_at;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLandingId(): string
+    {
+        return $this->landing_id;
+    }
+
+    /**
+     * @param string $landing_id
+     * @return FormResponse
+     */
+    public function setLandingId(string $landing_id): FormResponse
+    {
+        $this->landing_id = $landing_id;
+        return $this;
+    }
+
+    /**
+     * @return Form
+     */
+    public function getDefinition(): Form
+    {
+        return $this->definition;
+    }
+
+    /**
+     * @param Form $definition
+     * @return FormResponse
+     */
+    public function setDefinition(Form $definition): FormResponse
+    {
+        $this->definition = $definition;
+        return $this;
+    }
+
+    /**
+     * @return Answer[]
+     */
+    public function getAnswers(): array
+    {
+        return $this->answers;
+    }
+
+    /**
+     * @param Answer[] $answers
+     * @return FormResponse
+     */
+    public function setAnswers(array $answers): FormResponse
+    {
+        $this->answers = $answers;
+        return $this;
     }
 }

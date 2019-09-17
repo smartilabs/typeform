@@ -12,13 +12,13 @@ use WATR\Models\Screen;
  */
 class Form  extends \WATR\Models\Model
 {
-    
+
     /**
      *
      * @var string
      */
     public $baseUri = 'forms';
-    
+
     /**
      * @var string Typeform unique identifier
      */
@@ -59,11 +59,16 @@ class Form  extends \WATR\Models\Model
      */
     public $fields = [];
 
+    /**
+     * @var \DateTime
+     */
+    public $last_updated_at;
+
     /*
      * @var Link settings
      */
     public $link = [];
-    
+
     /*
      * @var '' settings
      */
@@ -77,14 +82,14 @@ class Form  extends \WATR\Models\Model
      * @var raw form
      */
     private $raw;
-    
+
     /**
      * Generates an array of items which will need to be used to send back to typeform
      *
      * @return array
      */
     public function getProperties() {
-        
+
         $out = [];
         $out[] = 'id';
         $out[] = 'title';
@@ -96,10 +101,10 @@ class Form  extends \WATR\Models\Model
         $out[] = ['id' => 'logic', 'type' => 'array', 'class' => Field::class];
         $out[] = 'link';
         $out[] = ['id' => 'hidden', 'type' => 'array'];
-        
+
         return $out;
     }
-    
+
     /**
      * Generates a URL to obtain information from
      *
@@ -108,7 +113,7 @@ class Form  extends \WATR\Models\Model
     public function getUrl() {
         return $this->baseUri;
     }
-    
+
     /**
      * Form constructor
      */
@@ -117,7 +122,7 @@ class Form  extends \WATR\Models\Model
         if ($json == null) {
             return;
         }
-        
+
         $this->raw = $json;
         $this->id = $json->id;
         $this->title = $json->title;
@@ -141,7 +146,7 @@ class Form  extends \WATR\Models\Model
         }
 
         $this->settings = new Link($json->_links);
-        
+
         if (isset($json->fields)) {
             foreach ($json->fields as $field) {
                 array_push($this->fields, new Field($field));
@@ -158,7 +163,7 @@ class Form  extends \WATR\Models\Model
                 array_push($this->hidden, $hid);
             }
         }
-        
+
     }
 
     /**
@@ -179,26 +184,28 @@ class Form  extends \WATR\Models\Model
     public function toArray()
     {
         $output = [];
-        
+
         $output['title'] = $this->title;
         $output['theme'] = $this->theme;
         $output['settings'] = $this->settings->toArray();
         $output['fields'] = array_map(function($field) {
-                                return $field->toArray();
-                            } , $this->fields);
-            
+            return $field->toArray();
+        } , $this->fields);
+
         $output['logic'] = $this->logic;
-        
+
         $output['thankyou_screens'] = array_map(function($field) {
             return $field->toArray();
         } , $this->thankyou_screens);
-        
+
+        $output['last_updated_at'] = $this->last_updated_at->format('c');
+
         return $output;
-        
+
     }
-    
+
     public function getQuestionByRef($ref, $searchByTitleAlso = false) {
-        
+
         foreach ($this->fields as $field) {
             if ($ref == $field->getRef()) {
                 return $field;
@@ -209,10 +216,10 @@ class Form  extends \WATR\Models\Model
                 return $field;
             }
         }
-        
+
         return null;
     }
-    
+
     public function getRaw()
     {
         return $this->raw;
@@ -298,7 +305,7 @@ class Form  extends \WATR\Models\Model
     }
 
     /**
-     * @return multitype:\WATR\Models\Screen 
+     * @return multitype:\WATR\Models\Screen
      */
     public function getWelcome_screens()
     {
@@ -314,13 +321,13 @@ class Form  extends \WATR\Models\Model
     }
 
     /**
-     * @return multitype:\WATR\Models\Screen 
+     * @return multitype:\WATR\Models\Screen
      */
     public function getThankyou_screens()
     {
         return $this->thankyou_screens;
     }
-    
+
     /**
      * @param multitype:\WATR\Models\Screen  $thankyou_screens
      */
@@ -330,7 +337,7 @@ class Form  extends \WATR\Models\Model
     }
 
     /**
-     * @return multitype:\WATR\Models\Field 
+     * @return multitype:\WATR\Models\Field
      */
     public function getFields()
     {
@@ -343,6 +350,32 @@ class Form  extends \WATR\Models\Model
     public function setFields($fields)
     {
         $this->fields = $fields;
+    }
+
+    /**
+     * @return \DateTime|string
+     */
+    public function getLastUpdatedAt(): DateTime
+    {
+        if (is_string($this->last_updated_at)) {
+            return new \DateTime($this->last_updated_at);
+        }
+
+        return $this->last_updated_at;
+    }
+
+    /**
+     * @param \DateTime|string $last_updated_at
+     * @return Form
+     */
+    public function setLastUpdatedAt($last_updated_at): Form
+    {
+        if (is_string($last_updated_at)) {
+            $last_updated_at = new \DateTime($last_updated_at);
+        }
+
+        $this->last_updated_at = $last_updated_at;
+        return $this;
     }
 
     /**

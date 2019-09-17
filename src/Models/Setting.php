@@ -15,7 +15,7 @@ class Setting
     /**
      * @var boolean trial
      */
-    protected $is_trial;
+    public $is_trial;
 
     /**
      * @var string language
@@ -76,6 +76,7 @@ class Setting
         $output = [];
         $output['language'] = $this->language;
         $output['is_public'] = $this->is_public;
+        $output['is_trial'] = $this->is_trial;
         $output['progress_bar'] = $this->progress_bar;
         $output['show_typeform_branding'] = (boolean)  $this->show_typeform_branding;
             

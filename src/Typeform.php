@@ -53,11 +53,16 @@ class Typeform
     /**
      * Get form responses
      * 
-     * @return FormResponse[]
+     * @return object
      */
-    public function getResponses($formId)
+    public function getResponses($formId, array $params = [])
     {
-        $response = $this->http->get("/forms/" . $formId . "/responses?page_size=999");
+        $params['page_size'] = $params['page_size'] ?? 999;
+
+        $response = $this->http->get("/forms/" . $formId . "/responses", [
+            'query' => $params
+        ]);
+
         $body = json_decode($response->getBody());
         $responses = [];
         if (isset($body->items)) {
@@ -65,7 +70,10 @@ class Typeform
                 $responses[] = new FormResponse($item);
             }
         }
-        return $responses;
+
+        $body->items = $responses;
+
+        return $body;
     }
     
     
