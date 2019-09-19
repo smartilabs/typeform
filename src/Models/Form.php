@@ -355,7 +355,7 @@ class Form  extends \WATR\Models\Model
     /**
      * @return \DateTime|string
      */
-    public function getLastUpdatedAt(): DateTime
+    public function getLastUpdatedAt(): \DateTime
     {
         if (is_string($this->last_updated_at)) {
             return new \DateTime($this->last_updated_at);
